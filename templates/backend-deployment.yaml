@@ -29,11 +29,18 @@ spec:
           
           # Загружаем все переменные из ConfigMap и Secret
           envFrom:
+            # 1. Загружаем нечувствительные конфиги
             - configMapRef:
                 name: {{ include "remnaware.fullname" . }}-config
-            # Используем хелпер для определения имени секрета
+            # 2. Загружаем JWT
             - secretRef:
-                name: {{ include "remnaware.secretName" . }}
+                name: {{ include "remnaware.secretName.jwt" . }}
+            # 3. Загружаем Telegram
+            - secretRef:
+                name: {{ include "remnaware.secretName.telegram" . }}
+            # 4. Загружаем Метрики
+            - secretRef:
+                name: {{ include "remnaware.secretName.metrics" . }}
           
           # Явное подключение к БД, созданной CNPG
           env:

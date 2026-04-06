@@ -35,28 +35,29 @@ config:
   notConnectedUsersNotificationsEnabled: "false"
   notConnectedUsersNotificationsAfterHours: "[6, 24, 48]"
 
-# --- Секреты (Secret) ---
-secret:
-  # Имя существующего секрета (созданного через SOPS, Vault / External Secrets Operator).
-  # Если указано, чарт НЕ БУДЕТ создавать свой Secret, а будет использовать этот.
-  # Внешний секрет ДОЛЖЕН содержать следующие ключи:
-  # JWT_AUTH_SECRET, JWT_API_TOKENS_SECRET, TELEGRAM_BOT_TOKEN, TELEGRAM_NOTIFY_USERS, 
-  # TELEGRAM_NOTIFY_NODES, TELEGRAM_NOTIFY_CRM, TELEGRAM_NOTIFY_SERVICE, 
-  # TELEGRAM_NOTIFY_TBLOCKER, METRICS_USER, METRICS_PASS, WEBHOOK_SECRET_HEADER
-  existingSecret: ""
+secrets:
+  # 1. JWT (Авторизация и токены API)
+  jwt:
+    existingSecret: "" # Если указано, ключи берутся оттуда (ожидаются: JWT_AUTH_SECRET, JWT_API_TOKENS_SECRET)
+    authSecret: "change_me"
+    apiTokensSecret: "change_me"
 
-  # Дефолтные значения (игнорируются, если указан existingSecret)
-  jwtAuthSecret: "change_me"
-  jwtApiTokensSecret: "change_me"
-  telegramBotToken: "change_me"
-  telegramNotifyUsers: "change_me"
-  telegramNotifyNodes: "change_me"
-  telegramNotifyCrm: "change_me"
-  telegramNotifyService: "change_me"
-  telegramNotifyTblocker: "change_me"
-  metricsUser: "admin"
-  metricsPass: "admin"
-  webhookSecretHeader: "vsmu67Kmg6R8FjIOF1WUY8LWBHie4scdEqrfsKmyf4IAf8dY3nFS0wwYHkhh6ZvQ"
+  # 2. Telegram (Уведомления)
+  telegram:
+    existingSecret: "" # Ожидаются ключи: TELEGRAM_BOT_TOKEN, TELEGRAM_NOTIFY_...
+    botToken: "change_me"
+    notifyUsers: "change_me"
+    notifyNodes: "change_me"
+    notifyCrm: "change_me"
+    notifyService: "change_me"
+    notifyTblocker: "change_me"
+
+  # 3. Метрики и Webhook
+  metrics:
+    existingSecret: "" # Ожидаются: METRICS_USER, METRICS_PASS, WEBHOOK_SECRET_HEADER
+    metricsUser: "admin"
+    metricsPass: "admin"
+    webhookSecretHeader: "vsmu67Kmg6R8FjIOF1WUY8LWBHie4scdEqrfsKmyf4IAf8dY3nFS0wwYHkhh6ZvQ"
 
 # --- Настройки Valkey (Кэш) ---
 valkey:

@@ -25,13 +25,29 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{/*
-Get the name of the secret to be used.
-*/}}
-{{- define "remnaware.secretName" -}}
-{{- if .Values.secret.existingSecret -}}
-    {{- .Values.secret.existingSecret -}}
+{{/* Получить имя секрета JWT */}}
+{{- define "remnaware.secretName.jwt" -}}
+{{- if .Values.secrets.jwt.existingSecret -}}
+    {{- .Values.secrets.jwt.existingSecret -}}
 {{- else -}}
-    {{- include "remnaware.fullname" . }}-secret
+    {{- include "remnaware.fullname" . }}-jwt
+{{- end -}}
+{{- end -}}
+
+{{/* Получить имя секрета Telegram */}}
+{{- define "remnaware.secretName.telegram" -}}
+{{- if .Values.secrets.telegram.existingSecret -}}
+    {{- .Values.secrets.telegram.existingSecret -}}
+{{- else -}}
+    {{- include "remnaware.fullname" . }}-telegram
+{{- end -}}
+{{- end -}}
+
+{{/* Получить имя секрета Metrics/Webhook */}}
+{{- define "remnaware.secretName.metrics" -}}
+{{- if .Values.secrets.metrics.existingSecret -}}
+    {{- .Values.secrets.metrics.existingSecret -}}
+{{- else -}}
+    {{- include "remnaware.fullname" . }}-metrics
 {{- end -}}
 {{- end -}}
