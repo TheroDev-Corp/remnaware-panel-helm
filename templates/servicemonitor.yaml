@@ -21,10 +21,9 @@ spec:
       {{- if .Values.serviceMonitor.basicAuth.enabled }}
       basicAuth:
         username:
-          name: {{ include "remnaware.fullname" . }}-secret
+          name: {{ include "remnaware.secretName" . }}
           key: METRICS_USER
         password:
-          name: {{ include "remnaware.fullname" . }}-secret
+          name: {{ include "remnaware.secretName" . }}
           key: METRICS_PASS
       {{- end }}
-{{- end }}

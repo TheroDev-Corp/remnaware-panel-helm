@@ -24,3 +24,14 @@ app.kubernetes.io/name: {{ include "remnaware.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
+
+{{/*
+Get the name of the secret to be used.
+*/}}
+{{- define "remnaware.secretName" -}}
+{{- if .Values.secret.existingSecret -}}
+    {{- .Values.secret.existingSecret -}}
+{{- else -}}
+    {{- include "remnaware.fullname" . }}-secret
+{{- end -}}
+{{- end -}}

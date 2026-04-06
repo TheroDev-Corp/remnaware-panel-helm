@@ -31,8 +31,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "remnaware.fullname" . }}-config
+            # Используем хелпер для определения имени секрета
             - secretRef:
-                name: {{ include "remnaware.fullname" . }}-secret
+                name: {{ include "remnaware.secretName" . }}
           
           # Явное подключение к БД, созданной CNPG
           env:

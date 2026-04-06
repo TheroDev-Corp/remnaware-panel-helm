@@ -36,8 +36,16 @@ config:
   notConnectedUsersNotificationsAfterHours: "[6, 24, 48]"
 
 # --- Секреты (Secret) ---
-# В production значения нужно переопределять при установке (--set) или через SOPS/SealedSecrets
 secret:
+  # Имя существующего секрета (созданного через SOPS, Vault / External Secrets Operator).
+  # Если указано, чарт НЕ БУДЕТ создавать свой Secret, а будет использовать этот.
+  # Внешний секрет ДОЛЖЕН содержать следующие ключи:
+  # JWT_AUTH_SECRET, JWT_API_TOKENS_SECRET, TELEGRAM_BOT_TOKEN, TELEGRAM_NOTIFY_USERS, 
+  # TELEGRAM_NOTIFY_NODES, TELEGRAM_NOTIFY_CRM, TELEGRAM_NOTIFY_SERVICE, 
+  # TELEGRAM_NOTIFY_TBLOCKER, METRICS_USER, METRICS_PASS, WEBHOOK_SECRET_HEADER
+  existingSecret: ""
+
+  # Дефолтные значения (игнорируются, если указан existingSecret)
   jwtAuthSecret: "change_me"
   jwtApiTokensSecret: "change_me"
   telegramBotToken: "change_me"
