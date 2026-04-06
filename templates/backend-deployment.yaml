@@ -42,15 +42,20 @@ spec:
             - secretRef:
                 name: {{ include "remnaware.secretName.metrics" . }}
           
-          # Явное подключение к БД, созданной CNPG
+          # Подключение к БД (CNPG или внешняя)
           env:
-            {{- if .Values.cnpg.enabled }}
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
+                  {{- if .Values.cnpg.enabled }}
+                  # Если CNPG включен, берем секрет, сгенерированный оператором
                   name: {{ include "remnaware.fullname" . }}-db-app
                   key: uri
-            {{- end }}
+                  {{- else }}
+                  # Если CNPG выключен, берем наш секрет (или внешний)
+                  name: {{ include "remnaware.secretName.database" . }}
+                  key: DATABASE_URL
+                  {{- end }}
           
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}

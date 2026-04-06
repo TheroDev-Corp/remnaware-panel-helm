@@ -59,6 +59,11 @@ secrets:
     metricsPass: "admin"
     webhookSecretHeader: "vsmu67Kmg6R8FjIOF1WUY8LWBHie4scdEqrfsKmyf4IAf8dY3nFS0wwYHkhh6ZvQ"
 
+  # 4. Внешняя база данных (Используется ТОЛЬКО если cnpg.enabled: false)
+  database:
+    existingSecret: "" # Ожидается ключ: DATABASE_URL
+    url: "postgresql://postgres:postgres@external-host:5432/postgres"
+
 # --- Настройки Valkey (Кэш) ---
 valkey:
   image:

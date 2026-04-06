@@ -51,3 +51,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
     {{- include "remnaware.fullname" . }}-metrics
 {{- end -}}
 {{- end -}}
+{{/* Получить имя секрета внешней БД */}}
+{{- define "remnaware.secretName.database" -}}
+{{- if .Values.secrets.database.existingSecret -}}
+    {{- .Values.secrets.database.existingSecret -}}
+{{- else -}}
+    {{- include "remnaware.fullname" . }}-external-db
+{{- end -}}
+{{- end -}}
