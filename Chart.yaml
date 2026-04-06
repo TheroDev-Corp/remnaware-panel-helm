@@ -1,0 +1,6 @@
+apiVersion: v2
+name: remnaware-panel
+description: A Helm chart for Remnawave Panel with CloudNativePG and Valkey
+type: application
+version: 0.1.0
+appVersion: "2.0.0"

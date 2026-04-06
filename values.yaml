@@ -1,0 +1,105 @@
+nameOverride: ""
+fullnameOverride: ""
+
+# --- Настройки Backend (Remnawave) ---
+backend:
+  replicaCount: 1
+  image:
+    repository: remnawave/backend
+    tag: "2"
+    pullPolicy: IfNotPresent
+  
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+# --- Конфигурация приложения (ConfigMap) ---
+config:
+  appPort: 3000
+  metricsPort: 3001
+  apiInstances: 1
+  panelDomain: panel.domain.com
+  frontEndDomain: "*"
+  subPublicDomain: panel.domain.com/api/sub
+  swaggerPath: /docs
+  scalarPath: /scalar
+  isDocsEnabled: "false"
+  telegramNotificationsEnabled: "false"
+  webhookEnabled: "false"
+  webhookUrl: ""
+  bandwidthUsageNotificationsEnabled: "false"
+  bandwidthUsageNotificationsThreshold: "[60, 80]"
+  notConnectedUsersNotificationsEnabled: "false"
+  notConnectedUsersNotificationsAfterHours: "[6, 24, 48]"
+
+# --- Секреты (Secret) ---
+# В production значения нужно переопределять при установке (--set) или через SOPS/SealedSecrets
+secret:
+  jwtAuthSecret: "change_me"
+  jwtApiTokensSecret: "change_me"
+  telegramBotToken: "change_me"
+  telegramNotifyUsers: "change_me"
+  telegramNotifyNodes: "change_me"
+  telegramNotifyCrm: "change_me"
+  telegramNotifyService: "change_me"
+  telegramNotifyTblocker: "change_me"
+  metricsUser: "admin"
+  metricsPass: "admin"
+  webhookSecretHeader: "vsmu67Kmg6R8FjIOF1WUY8LWBHie4scdEqrfsKmyf4IAf8dY3nFS0wwYHkhh6ZvQ"
+
+# --- Настройки Valkey (Кэш) ---
+valkey:
+  image:
+    repository: valkey/valkey
+    tag: 9-alpine
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+# --- Настройки базы данных (CloudNativePG) ---
+cnpg:
+  enabled: true # Флаг, если БД управляется извне, можно выключить
+  instances: 1  # Для k3s 1 инстанс ОК, для HA ставим 3
+  storage:
+    size: 10Gi
+    storageClass: local-path # дефолт k3s
+  # backup:
+  #   enabled: true
+  #   s3: ... # Здесь в будущем можно настроить бэкапы в S3
+
+# --- Настройки Ingress ---
+ingress:
+  enabled: false
+  className: "traefik" # дефолт k3s
+  annotations: {}
+    # kubernetes.io/ingress.class: traefik
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: panel.domain.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: remnawave-tls-secret
+  #    hosts:
+  #      - panel.domain.com
+
+# --- Настройки Мониторинга (Prometheus Operator) ---
+serviceMonitor:
+  enabled: false
+  interval: 30s
+  scrapeTimeout: 10s
+  
+  # Лейблы, по которым Prometheus Operator ищет ServiceMonitor'ы (часто это release: prometheus или kube-prometheus-stack)
+  additionalLabels:
+    release: prometheus
+  
+  # Настройка авторизации
+  basicAuth:
+    enabled: true # Установи true, если эндпоинт /metrics защищен (METRICS_USER и METRICS_PASS)

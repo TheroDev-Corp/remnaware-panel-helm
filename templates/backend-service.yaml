@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "remnaware.fullname" . }}
+  labels:
+    {{- include "remnaware.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.config.appPort }}
+      targetPort: http-app
+      protocol: TCP
+      name: http-app
+    - port: {{ .Values.config.metricsPort }}
+      targetPort: http-metrics
+      protocol: TCP
+      name: http-metrics
+  selector:
+    app.kubernetes.io/name: {{ include "remnaware.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

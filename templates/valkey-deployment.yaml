@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "remnaware.fullname" . }}-valkey
+  labels:
+    {{- include "remnaware.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "remnaware.name" . }}-valkey
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "remnaware.name" . }}-valkey
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: valkey
+          image: "{{ .Values.valkey.image.repository }}:{{ .Values.valkey.image.tag }}"
+          command:
+            - "valkey-server"
+            - "--save"
+            - ""
+            - "--appendonly"
+            - "no"
+            - "--maxmemory-policy"
+            - "noeviction"
+            - "--loglevel"
+            - "warning"
+            - "--port"
+            - "6379"
+          ports:
+            - name: tcp-valkey
+              containerPort: 6379
+          resources:
+            {{- toYaml .Values.valkey.resources | nindent 12 }}
+          livenessProbe:
+            exec:
+              command: ["valkey-cli", "ping"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
