@@ -27,3 +27,4 @@ spec:
           name: {{ include "remnaware.secretName.metrics" . }}
           key: METRICS_PASS
       {{- end }}
+{{- end }}
