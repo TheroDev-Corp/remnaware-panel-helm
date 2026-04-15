@@ -102,6 +102,7 @@ If `cnpg.enabled: true`, you can enable automated backups to any S3-compatible s
        endpointURL: "https://s3.your-region.amazonaws.com"
        existingSecret: "cnpg-s3-credentials"
        retentionPolicy: "30d"
+       # backupOwner: "primary" # Uncomment for newer CNPG versions if needed
    ```
 
 ## 🗑️ Uninstallation

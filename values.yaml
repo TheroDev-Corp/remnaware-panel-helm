@@ -92,7 +92,7 @@ cnpg:
     serverName: "remnawave-db"
     schedule: "0 0 3 * * *"
     retentionPolicy: "30d"
-    backupOwner: "primary"
+    backupOwner: "" # Set to "primary" or "
 
 # --- Настройки Ingress ---
 ingress:
