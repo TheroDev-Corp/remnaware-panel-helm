@@ -23,12 +23,14 @@ This Helm chart simplifies the deployment of the **Remnawave Panel Backend** on 
 ## 📥 Installation
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/TheroDev-Corp/remnaware-panel-helm.git
 cd remnaware-panel-helm
 ```
 
 ### 2. Configure Values
+
 Create a custom `my-values.yaml` or modify the existing `values.yaml`. At a minimum, you should set your domain and secrets:
 
 ```yaml
@@ -45,6 +47,7 @@ secrets:
 ```
 
 ### 3. Install the Chart
+
 ```bash
 helm install remnaware-panel ./ -f my-values.yaml
 ```
@@ -82,6 +85,7 @@ You can either provide secrets directly in `values.yaml` or use existing Kuberne
 If `cnpg.enabled: true`, you can enable automated backups to any S3-compatible storage:
 
 1. Create a secret for S3 credentials:
+
    ```yaml
    apiVersion: v1
    kind: Secret
@@ -94,6 +98,7 @@ If `cnpg.enabled: true`, you can enable automated backups to any S3-compatible s
    ```
 
 2. Configure backup settings in `values.yaml`:
+
    ```yaml
    cnpg:
      backup:
@@ -102,7 +107,6 @@ If `cnpg.enabled: true`, you can enable automated backups to any S3-compatible s
        endpointURL: "https://s3.your-region.amazonaws.com"
        existingSecret: "cnpg-s3-credentials"
        retentionPolicy: "30d"
-       # backupOwner: "primary" # Uncomment for newer CNPG versions if needed
    ```
 
 ## 🗑️ Uninstallation

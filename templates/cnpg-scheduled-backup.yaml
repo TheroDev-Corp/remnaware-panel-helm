@@ -7,11 +7,6 @@ metadata:
     {{- include "remnaware.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.cnpg.backup.schedule | quote }}
-  {{- if .Values.cnpg.backup.backupOwner }}
-  backupOwner: {{ .Values.cnpg.backup.backupOwner | quote }}
-  {{- else }}
-  backupOwner: primary
-  {{- end }}
   cluster:
     name: {{ include "remnaware.fullname" . }}-db
 {{- end }}
