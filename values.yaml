@@ -84,9 +84,13 @@ cnpg:
   storage:
     size: 10Gi
     storageClass: local-path # дефолт k3s
-  # backup:
-  #   enabled: true
-  #   s3: ... # Здесь в будущем можно настроить бэкапы в S3
+  backup:
+    enabled: false
+    bucketName: "remnawave-backups"
+    endpointURL: "https://s3.amazonaws.com"
+    existingSecret: "cnpg-s3-credentials" # Secret with ACCESS_KEY_ID and ACCESS_SECRET_KEY
+    serverName: "remnawave-db"
+    retentionPolicy: "30d"
 
 # --- Настройки Ingress ---
 ingress:

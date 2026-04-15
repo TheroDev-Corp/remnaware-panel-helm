@@ -60,6 +60,8 @@ The following table lists the most important configurable parameters of the char
 | `config.telegramNotificationsEnabled` | Enable Telegram notifications | `false` |
 | `cnpg.enabled` | Use CloudNativePG for managed DB | `true` |
 | `cnpg.instances` | Number of DB instances (set to 3 for HA) | `1` |
+| `cnpg.backup.enabled` | Enable S3 backups (requires S3 credentials) | `false` |
+| `cnpg.backup.retentionPolicy` | How long to keep backups | `30d` |
 | `valkey.image.tag` | Valkey version | `9-alpine` |
 | `ingress.enabled` | Enable Ingress resource | `false` |
 | `serviceMonitor.enabled` | Enable Prometheus ServiceMonitor | `false` |
@@ -74,6 +76,33 @@ You can either provide secrets directly in `values.yaml` or use existing Kuberne
 - **JWT**: Set `secrets.jwt.existingSecret` to use a pre-created secret (must contain `JWT_AUTH_SECRET` and `JWT_API_TOKENS_SECRET`).
 - **Telegram**: Set `secrets.telegram.existingSecret` (must contain `TELEGRAM_BOT_TOKEN`, etc.).
 - **External DB**: If you set `cnpg.enabled: false`, you must provide a `DATABASE_URL` via `secrets.database.url` or `secrets.database.existingSecret`.
+
+## 💾 Database Backups (S3)
+
+If `cnpg.enabled: true`, you can enable automated backups to any S3-compatible storage:
+
+1. Create a secret for S3 credentials:
+   ```yaml
+   apiVersion: v1
+   kind: Secret
+   metadata:
+     name: cnpg-s3-credentials
+   type: Opaque
+   data:
+     ACCESS_KEY_ID: <base64-access-key>
+     ACCESS_SECRET_KEY: <base64-secret-key>
+   ```
+
+2. Configure backup settings in `values.yaml`:
+   ```yaml
+   cnpg:
+     backup:
+       enabled: true
+       bucketName: "your-bucket"
+       endpointURL: "https://s3.your-region.amazonaws.com"
+       existingSecret: "cnpg-s3-credentials"
+       retentionPolicy: "30d"
+   ```
 
 ## 🗑️ Uninstallation
 
