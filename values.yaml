@@ -6,7 +6,7 @@ backend:
   replicaCount: 1
   image:
     repository: remnawave/backend
-    tag: "2"
+    tag: "2.7.4"
     pullPolicy: IfNotPresent
   
   resources:
