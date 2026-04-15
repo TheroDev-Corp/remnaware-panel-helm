@@ -90,7 +90,9 @@ cnpg:
     endpointURL: "https://s3.amazonaws.com"
     existingSecret: "cnpg-s3-credentials" # Secret with ACCESS_KEY_ID and ACCESS_SECRET_KEY
     serverName: "remnawave-db"
+    schedule: "0 0 3 * * *"
     retentionPolicy: "30d"
+    backupOwner: "primary"
 
 # --- Настройки Ingress ---
 ingress:

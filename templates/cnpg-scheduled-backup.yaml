@@ -1,0 +1,13 @@
+{{- if and .Values.cnpg.enabled .Values.cnpg.backup.enabled }}
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: {{ include "remnaware.fullname" . }}-daily-backup
+  labels:
+    {{- include "remnaware.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.cnpg.backup.schedule | quote }}
+  backupOwner: {{ .Values.cnpg.backup.backupOwner | default "primary" | quote }}
+  cluster:
+    name: {{ include "remnaware.fullname" . }}-db
+{{- end }}

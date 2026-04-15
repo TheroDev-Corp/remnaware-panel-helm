@@ -30,10 +30,10 @@ spec:
         compression: gzip
       serverName: {{ .Values.cnpg.backup.serverName | quote }}
     retentionPolicy: {{ .Values.cnpg.backup.retentionPolicy | quote }}
-  {{- end }}
+{{- end }}
 
   bootstrap:
     initdb:
       database: remnawave
       owner: remnawave
-{{- end }}
+{{- end }}
