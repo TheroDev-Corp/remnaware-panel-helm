@@ -26,6 +26,9 @@ spec:
         secretAccessKey:
           name: {{ .Values.cnpg.backup.existingSecret }}
           key: ACCESS_SECRET_KEY
+        region:
+          name: {{ .Values.cnpg.backup.existingSecret }}
+          key: REGION
       wal:
         compression: gzip
       serverName: {{ .Values.cnpg.backup.serverName | quote }}
